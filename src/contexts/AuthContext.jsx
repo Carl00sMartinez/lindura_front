@@ -40,17 +40,30 @@ export const AuthProvider = ({ children }) => {
     });
   }, [])
 
-  const login = async (email, password) => {
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-      return { data, error }
-    } catch (error) {
-      return { data: null, error }
+  // Busca esta función y asegúrate de que esté bien definida
+const login = async (email, password) => {
+  try {
+    console.log('🔐 Intentando login con:', email);
+    
+    // Método 1: Usando Supabase Auth directamente
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      console.error('❌ Error de Supabase:', error);
+      throw error;
     }
+
+    console.log('✅ Login exitoso:', data);
+    return data;
+    
+  } catch (error) {
+    console.error('❌ Error en login:', error);
+    throw error;
   }
+};
 
   const logout = async () => {
     const { error } = await supabase.auth.signOut()
